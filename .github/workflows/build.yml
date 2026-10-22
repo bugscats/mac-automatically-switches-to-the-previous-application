@@ -1,0 +1,15 @@
+name: macOS build and boundary checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build native application
+        run: bash build.sh
+      - name: Check trigger boundaries
+        run: bash tests/run.sh
+      - name: Check shell scripts
+        run: bash -n build.sh install.sh uninstall.sh tests/run.sh
